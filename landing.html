@@ -1,0 +1,127 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Welcome to MoodBloom</title>
+  <link rel="stylesheet" href="style.css" />
+  <style>
+    .container {
+      max-width: 960px;
+      margin: 0 auto;
+      padding: 40px 20px 60px;
+    }
+
+    .hero {
+      text-align: center;
+      padding: 80px 20px;
+      background: linear-gradient(135deg, #e1efff, #f6f9fc);
+      border-radius: 20px;
+      margin-bottom: 40px;
+    }
+
+    .hero h1 {
+      font-size: 3rem;
+      color: #4a7ac7;
+      margin-bottom: 20px;
+    }
+
+    .hero p {
+      font-size: 1.2rem;
+      color: #555;
+      max-width: 600px;
+      margin: 0 auto;
+    }
+
+    .cta {
+      margin-top: 30px;
+    }
+
+    .feature-section {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 20px;
+      justify-content: center;
+      margin-top: 20px;
+    }
+
+    .feature {
+      background: #ffffff;
+      border-radius: 12px;
+      padding: 20px;
+      box-shadow: 0 3px 8px rgba(0, 0, 0, 0.06);
+      max-width: 260px;
+      flex: 1 1 220px;
+      text-align: center;
+    }
+
+    .feature h3 {
+      color: #5d93e1;
+      margin-bottom: 10px;
+    }
+
+    .start-button {
+      font-size: 1.1rem;
+      padding: 14px 28px;
+    }
+
+    .nav-links {
+      display: flex;
+      gap: 14px;
+      justify-content: center;
+      flex-wrap: wrap;
+      margin-top: 40px;
+    }
+
+    .nav-links a {
+      text-decoration: none;
+      background-color: #5d93e1;
+      color: white;
+      padding: 12px 20px;
+      border-radius: 10px;
+      transition: background-color 0.3s;
+    }
+
+    .nav-links a:hover {
+      background-color: #4a7ac7;
+    }
+  </style>
+</head>
+<body>
+  <main class="container">
+    <section class="hero">
+      <h1>Welcome to MoodBloom</h1>
+      <p>Track your emotions, share anonymously, and discover daily motivation in one friendly space.</p>
+      <div class="cta">
+        <a href="home.html"><button class="start-button">Start Now</button></a>
+      </div>
+    </section>
+
+    <h2 style="text-align: center;">Features</h2>
+    <section class="feature-section">
+      <article class="feature">
+        <h3>Mood Tracker</h3>
+        <p>Enter how you feel and get a reflection based on your mood.</p>
+      </article>
+      <article class="feature">
+        <h3>Anonymous Space</h3>
+        <p>Dump your heart out and feel a bit lighter.</p>
+      </article>
+      <article class="feature">
+        <h3>Daily Journal</h3>
+        <p>Record your feelings and experiences to reflect on yourself.</p>
+      </article>
+      <article class="feature">
+        <h3>Motivation and Calm</h3>
+        <p>Get comforting prompts when you are down or stressed.</p>
+      </article>
+    </section>
+
+    <nav class="nav-links" aria-label="Main navigation">
+      <a href="home.html">Home</a>
+      <a href="message.html">Heart Dump</a>
+      <a href="journal.html">Journal</a>
+    </nav>
+  </main>
+</body>
+</html>

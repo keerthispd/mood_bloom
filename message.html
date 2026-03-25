@@ -1,0 +1,151 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Heart Dump - MoodBloom</title>
+  <link rel="stylesheet" href="style.css" />
+  <style>
+    .page {
+      max-width: 760px;
+      margin: 0 auto;
+      padding: 28px 20px 48px;
+    }
+
+    textarea {
+      width: 100%;
+      min-height: 120px;
+      margin: 10px 0 14px;
+      resize: vertical;
+    }
+
+    .message-box {
+      background-color: #e6ecf3;
+      border-radius: 10px;
+      padding: 15px;
+      margin: 12px 0;
+      box-shadow: 1px 1px 8px rgba(0, 0, 0, 0.05);
+    }
+
+    .message-box p {
+      margin-bottom: 8px;
+      white-space: pre-wrap;
+      word-break: break-word;
+    }
+
+    .controls {
+      display: flex;
+      gap: 10px;
+      flex-wrap: wrap;
+      margin-bottom: 8px;
+    }
+
+    .nav {
+      margin-top: 20px;
+    }
+
+    .nav a {
+      margin-right: 14px;
+      text-decoration: none;
+      font-weight: 600;
+      color: #357abd;
+    }
+  </style>
+</head>
+<body>
+  <main class="page">
+    <h2>Anonymous Heart Dump</h2>
+
+    <form id="messageForm">
+      <textarea id="messageInput" name="message" placeholder="Write anything you're feeling..." required></textarea>
+      <div class="controls">
+        <button type="submit">Send</button>
+        <button type="button" id="clearMessages">Clear All</button>
+      </div>
+    </form>
+
+    <h3>Recent Messages</h3>
+    <section id="messagesList" aria-live="polite"></section>
+
+    <nav class="nav" aria-label="Page navigation">
+      <a href="home.html">Home</a>
+      <a href="journal.html">Journal</a>
+      <a href="landing.html">Landing</a>
+    </nav>
+  </main>
+
+  <script>
+    const STORAGE_KEY = "moodBloom:messages";
+    const form = document.getElementById("messageForm");
+    const input = document.getElementById("messageInput");
+    const list = document.getElementById("messagesList");
+    const clearBtn = document.getElementById("clearMessages");
+
+    function readMessages() {
+      try {
+        return JSON.parse(localStorage.getItem(STORAGE_KEY)) || [];
+      } catch (error) {
+        return [];
+      }
+    }
+
+    function saveMessages(messages) {
+      localStorage.setItem(STORAGE_KEY, JSON.stringify(messages));
+    }
+
+    function renderMessages() {
+      const messages = readMessages();
+      list.innerHTML = "";
+
+      if (messages.length === 0) {
+        list.innerHTML = "<p>No messages yet. You can add the first one.</p>";
+        return;
+      }
+
+      messages
+        .slice()
+        .reverse()
+        .forEach((item) => {
+          const card = document.createElement("div");
+          card.className = "message-box";
+
+          const text = document.createElement("p");
+          text.textContent = item.content;
+
+          const time = document.createElement("small");
+          const date = new Date(item.createdAt);
+          time.textContent = "Shared on " + date.toLocaleString();
+
+          card.appendChild(text);
+          card.appendChild(time);
+          list.appendChild(card);
+        });
+    }
+
+    form.addEventListener("submit", (event) => {
+      event.preventDefault();
+      const content = input.value.trim();
+      if (!content) {
+        return;
+      }
+
+      const messages = readMessages();
+      messages.push({
+        content,
+        createdAt: new Date().toISOString()
+      });
+
+      saveMessages(messages);
+      input.value = "";
+      renderMessages();
+    });
+
+    clearBtn.addEventListener("click", () => {
+      localStorage.removeItem(STORAGE_KEY);
+      renderMessages();
+    });
+
+    renderMessages();
+  </script>
+</body>
+</html>

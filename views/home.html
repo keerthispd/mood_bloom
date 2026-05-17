@@ -1,0 +1,121 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>MoodBloom - Mood Check-in</title>
+  <link rel="stylesheet" href="../public/style.css" />
+  <script src="../public/app.js" defer></script>
+</head>
+<body data-page="home">
+  <header class="site-header">
+    <a class="brand" href="dashboard.html">MoodBloom</a>
+    <nav class="site-nav" aria-label="Main navigation">
+      <a href="dashboard.html">Dashboard</a>
+      <a href="journal.html">Journal</a>
+      <a href="message.html">Heart Dump</a>
+    </nav>
+    <div class="session-bar" data-session-bar></div>
+  </header>
+
+  <main class="page-shell content-grid">
+    <section class="panel" id="mood-checkin">
+      <div class="section-header">
+        <div class="page-title">
+          <p class="eyebrow">Mood check-in</p>
+          <h1 data-page-greeting>How are you feeling today?</h1>
+          <p class="section-subtitle">Pick the mood that fits best, add a private note, and save it to your encrypted mood history.</p>
+        </div>
+      </div>
+
+      <div class="callout" data-mindfulness-tip>Pause for 4 slow breaths and notice one thing that feels safe right now.</div>
+      <div class="callout" data-guest-notice>Your check-ins are saved to your private account and shown only to you.</div>
+
+      <form class="field-stack" data-mood-form id="mood-checkin">
+        <div class="mood-grid" aria-label="Mood options">
+          <button type="button" class="mood-button" data-mood-option="calm" aria-pressed="true">
+            Calm
+            <small>Steady and grounded</small>
+          </button>
+          <button type="button" class="mood-button" data-mood-option="joyful" aria-pressed="false">
+            Joyful
+            <small>Warm and light</small>
+          </button>
+          <button type="button" class="mood-button" data-mood-option="low" aria-pressed="false">
+            Low
+            <small>Needs a softer pace</small>
+          </button>
+          <button type="button" class="mood-button" data-mood-option="anxious" aria-pressed="false">
+            Anxious
+            <small>Needs a deep breath</small>
+          </button>
+          <button type="button" class="mood-button" data-mood-option="frustrated" aria-pressed="false">
+            Frustrated
+            <small>Needs release and clarity</small>
+          </button>
+          <button type="button" class="mood-button" data-mood-option="overwhelmed" aria-pressed="false">
+            Overwhelmed
+            <small>Too much at once</small>
+          </button>
+          <button type="button" class="mood-button" data-mood-option="grateful" aria-pressed="false">
+            Grateful
+            <small>Noticing the good</small>
+          </button>
+        </div>
+
+        <label class="field">
+          <span>Private note</span>
+          <textarea data-mood-note placeholder="Add a few lines about why this mood fits today..."></textarea>
+        </label>
+
+        <div class="controls">
+          <button type="submit" class="button">Save mood check-in</button>
+          <button type="button" class="button-secondary" data-clear-moods>Clear my mood history</button>
+        </div>
+
+        <div class="status" data-mood-feedback data-state="info"></div>
+      </form>
+    </section>
+
+    <section class="panel">
+      <div class="section-header">
+        <div>
+          <p class="eyebrow">Weekly mood trends</p>
+          <h2>Last 7 days at a glance</h2>
+        </div>
+      </div>
+      <div class="trend-grid" data-mood-trends></div>
+      <p class="support-copy" data-mood-trends-note></p>
+    </section>
+
+    <section class="panel reflection-panel">
+      <div class="section-header">
+        <div>
+          <p class="eyebrow">Quick reflection</p>
+          <h2>A gentle prompt for today</h2>
+        </div>
+      </div>
+      <p class="support-copy" data-reflection-prompt></p>
+      <label class="field">
+        <span>Your reflection</span>
+        <textarea data-reflection-input placeholder="Write a few kind sentences to yourself."></textarea>
+      </label>
+      <div class="controls">
+        <button type="button" class="button" data-reflection-save>Save reflection</button>
+        <button type="button" class="button-secondary" data-reflection-clear>Clear</button>
+      </div>
+      <div class="status" data-reflection-status data-state="info">Reflections save privately when you are logged in.</div>
+    </section>
+
+    <section class="panel">
+      <div class="section-header">
+        <div>
+          <p class="eyebrow">Mood history</p>
+          <h2>Recent check-ins</h2>
+        </div>
+      </div>
+      <div class="history-list" data-mood-history></div>
+    </section>
+  </main>
+</body>
+</html>

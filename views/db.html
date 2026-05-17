@@ -1,0 +1,30 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>MoodBloom - Database Viewer</title>
+  <link rel="stylesheet" href="../public/style.css" />
+  <script src="../public/app.js" defer></script>
+</head>
+<body data-page="db">
+  <header class="site-header">
+    <a class="brand" href="dashboard.html">MoodBloom</a>
+    <div class="session-bar" data-session-bar></div>
+  </header>
+
+  <main class="page-shell content-grid">
+    <section class="panel">
+      <div class="section-header">
+        <div class="page-title">
+          <p class="eyebrow">Debug</p>
+          <h1>IndexedDB Viewer</h1>
+          <p class="section-subtitle">View database stores. Sensitive fields remain encrypted until you Unlock.</p>
+        </div>
+      </div>
+
+      <div id="db-output"></div>
+    </section>
+  </main>
+</body>
+</html>

@@ -1,0 +1,123 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>MoodBloom - Dashboard</title>
+  <link rel="stylesheet" href="../public/style.css" />
+  <script src="../public/app.js" defer></script>
+</head>
+<body data-page="dashboard">
+  <header class="site-header">
+    <a class="brand" href="landing.html">MoodBloom</a>
+    <nav class="site-nav" aria-label="Main navigation">
+      <a href="home.html">Mood Check-in</a>
+      <a href="journal.html">Journal</a>
+      <a href="message.html">Heart Dump</a>
+    </nav>
+    <div class="session-bar" data-session-bar></div>
+  </header>
+
+  <main class="page-shell content-grid">
+    <section class="panel dashboard-panel">
+      <div class="section-header">
+        <div class="page-title">
+          <p class="eyebrow">Dashboard</p>
+          <h1>Your wellbeing hub</h1>
+          <p class="section-subtitle">Start with a quick mood check-in, write in your private journal, or visit the anonymous heart dump when you want a lighter place to share or read supportive posts.</p>
+        </div>
+      </div>
+      <div class="quick-link-grid">
+        <a class="quick-link-card" href="home.html">
+          <strong>Mood check-in</strong>
+          <span>Pick how you feel, add a short note, and get a response with gentle next steps that fit your mood.</span>
+        </a>
+        <a class="quick-link-card" href="journal.html">
+          <strong>Journal</strong>
+          <span>Write longer thoughts, save them for later, and keep a private record of what mattered today.</span>
+        </a>
+        <a class="quick-link-card" href="message.html">
+          <strong>Anonymous heart dump</strong>
+          <span>Share what is on your mind anonymously, or read other supportive messages when you need encouragement.</span>
+        </a>
+      </div>
+
+      <div class="section-header">
+        <div>
+          <p class="eyebrow">Today’s focus</p>
+          <h2>Small things you can do right now</h2>
+        </div>
+      </div>
+      <div class="focus-grid">
+        <article class="focus-card">
+          <span class="focus-step">1</span>
+          <strong>Notice your mood</strong>
+          <p class="support-copy">Use the mood check-in if you want to name how today feels and get a reply that helps you take the next small step.</p>
+        </article>
+        <article class="focus-card">
+          <span class="focus-step">2</span>
+          <strong>Write one honest thought</strong>
+          <p class="support-copy">Open the journal when you want a private place to sort through your thoughts, write a longer reflection, or come back to a moment later.</p>
+        </article>
+        <article class="focus-card">
+          <span class="focus-step">3</span>
+          <strong>Share or read anonymously</strong>
+          <p class="support-copy">Go to the heart dump to post without your name attached, or browse supportive messages when you want a gentler kind of connection.</p>
+        </article>
+      </div>
+
+    </section>
+
+    <section class="panel wellbeing-panel">
+      <div class="section-header">
+        <div>
+          <p class="eyebrow">Mental wellbeing</p>
+          <h2>What it means and why it matters</h2>
+        </div>
+      </div>
+      <div class="wellbeing-grid">
+        <div class="wellbeing-copy">
+          <p class="support-copy wide-copy">
+            Mental wellbeing means having enough steadiness to handle everyday stress, notice how you feel, and respond in a way that supports you. It is not about being perfect or happy all the time. It is about giving yourself enough care to keep moving through life with a little more balance and ease.
+          </p>
+          <p class="support-copy wide-copy">
+            A few small habits can make a difference: pausing to name your mood, writing down what is on your mind, and choosing one kind action for yourself.
+          </p>
+          <p class="support-copy wide-copy">
+            MoodBloom is designed to help with those small moments. You can check in quickly, write more when you need it, and use the anonymous space when you want a lighter, more open place to share.
+          </p>
+        </div>
+        <div class="wellbeing-visual">
+          <img src="../public/assets/wellbeing-illustration.svg" alt="Calm wellness illustration" />
+        </div>
+      </div>
+    </section>
+
+    <section class="panel guide-panel">
+      <div class="section-header">
+        <div>
+          <p class="eyebrow">How to use</p>
+          <h2>A simple path through the app</h2>
+        </div>
+      </div>
+      <div class="stats-grid guide-grid">
+        <div class="stat-card">
+          <span>1. Check in</span>
+          <strong>Choose a mood and add a note.</strong>
+          <p class="support-copy">Use this when you want a quick read on your day and a supportive reply that matches what you’re feeling.</p>
+        </div>
+        <div class="stat-card">
+          <span>2. Reflect</span>
+          <strong>Write more when you need space.</strong>
+          <p class="support-copy">Open the journal for longer thoughts, private reflections, or anything you want to keep for later.</p>
+        </div>
+        <div class="stat-card">
+          <span>3. Connect</span>
+          <strong>Share anonymously or browse gently.</strong>
+          <p class="support-copy">Visit the heart dump to post a thought without your name attached, or read supportive posts from others.</p>
+        </div>
+      </div>
+    </section>
+  </main>
+</body>
+</html>

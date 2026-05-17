@@ -1,0 +1,61 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>MoodBloom - Sign in</title>
+  <link rel="stylesheet" href="../public/style.css" />
+  <script src="../public/app.js" defer></script>
+</head>
+<body data-page="landing">
+  <header class="site-header">
+    <a class="brand" href="landing.html">MoodBloom</a>
+    <div class="session-bar" data-session-bar></div>
+  </header>
+
+  <main class="page-shell landing-layout">
+    <section class="hero-panel">
+      <span class="eyebrow">Gentle wellbeing space</span>
+      <h1>Welcome back to your calm space.</h1>
+      <p>Sign in to unlock your private mood history and journal. Or continue as a guest to explore without saving personal data.</p>
+      <div class="button-row">
+        <button type="button" class="button" data-guest-mode>Continue as guest</button>
+      </div>
+    </section>
+
+    <section class="panel sign-in-panel" data-auth-panel id="auth-section">
+      <div class="two-column-grid">
+        <article class="support-card">
+          <p class="eyebrow">Daily mindfulness tip</p>
+          <h2>A small reset for today</h2>
+          <p class="support-copy" data-daily-tip></p>
+        </article>
+
+        <article class="auth-card" data-login-card>
+          <div class="card-header">
+            <div>
+              <p class="eyebrow">Sign in</p>
+              <h2>Access your private space</h2>
+            </div>
+          </div>
+          <form class="form-grid" data-login-form>
+            <label class="field">
+              <span>Username</span>
+              <input type="text" data-login-username placeholder="alex.bloom" required />
+            </label>
+            <label class="field">
+              <span>Password</span>
+              <input type="password" data-login-password placeholder="Your private password" required />
+            </label>
+            <div class="controls">
+              <button type="submit" class="button">Log in</button>
+            </div>
+          </form>
+          <div class="form-status" data-login-message data-state="info">Log in to keep your mood and journal history private.</div>
+        </article>
+      </div>
+    </section>
+    <p class="privacy-note">Guest mode does not save personal data.</p>
+  </main>
+</body>
+</html>

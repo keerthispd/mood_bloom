@@ -1,0 +1,61 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>MoodBloom - Anonymous Heart Dump</title>
+  <link rel="stylesheet" href="../public/style.css" />
+  <script src="../public/app.js" defer></script>
+</head>
+<body data-page="message">
+  <header class="site-header">
+    <a class="brand" href="dashboard.html">MoodBloom</a>
+    <nav class="site-nav" aria-label="Main navigation">
+      <a href="dashboard.html">Dashboard</a>
+      <a href="home.html">Mood</a>
+      <a href="journal.html">Journal</a>
+    </nav>
+    <div class="session-bar" data-session-bar></div>
+  </header>
+
+  <main class="page-shell content-grid">
+    <section class="panel">
+      <div class="section-header">
+        <div class="page-title">
+          <p class="eyebrow">Anonymous community space</p>
+          <h1 data-page-greeting>Anonymous heart dump</h1>
+          <p class="section-subtitle">Share support, coping ideas, small wins, and honest reflections without showing your user ID.</p>
+        </div>
+      </div>
+
+      <div class="callout" data-heart-guidelines>Community guidelines: keep posts anonymous, kind, and supportive. Share coping ideas, small wins, or honest reflections, and avoid harassment, threats, or personal details.</div>
+
+      <div class="callout" data-heart-post-notice>Every post is shared anonymously in the community feed, so only the message content is visible to other people.</div>
+
+      <form class="field-stack" data-heart-form>
+        <label class="field">
+          <span>Anonymous heart dump message</span>
+          <textarea data-heart-input maxlength="600" placeholder="Share a thought, tip, or encouragement for someone else."></textarea>
+        </label>
+
+        <div class="controls">
+          <button type="submit" class="button">Post anonymously</button>
+        </div>
+
+        <div class="status" data-heart-feedback data-state="info"></div>
+      </form>
+    </section>
+
+    <section class="panel">
+      <div class="section-header">
+        <div>
+          <p class="eyebrow">Shared feed</p>
+          <h2>Recent anonymous posts</h2>
+        </div>
+      </div>
+      <div class="notes-list" data-heart-list></div>
+      <p class="empty-state" data-heart-empty></p>
+    </section>
+  </main>
+</body>
+</html>

@@ -532,6 +532,7 @@ button:hover {
 	border: 1px solid rgba(124, 150, 180, 0.2);
 	background: linear-gradient(180deg, rgba(255, 255, 255, 0.94), rgba(243, 248, 255, 0.95));
 	box-shadow: 0 12px 24px rgba(90, 120, 160, 0.09);
+	min-width: 0;
 }
 
 .focus-card::before {
@@ -562,11 +563,13 @@ button:hover {
 .focus-card strong {
 	font-size: 1.02rem;
 	letter-spacing: -0.01em;
+	overflow-wrap: anywhere;
 }
 
 .focus-card .support-copy {
 	max-width: none;
 	line-height: 1.65;
+	overflow-wrap: anywhere;
 }
 
 .guide-panel {
@@ -913,6 +916,20 @@ button:hover {
 	.stats-grid,
 	.quick-link-grid {
 		grid-template-columns: 1fr;
+	}
+
+	.focus-grid {
+		grid-template-columns: 1fr;
+		gap: 0.75rem;
+	}
+
+	.focus-card {
+		padding: 0.9rem;
+	}
+
+	.focus-card strong,
+	.focus-card .support-copy {
+		word-break: break-word;
 	}
 
 	.quick-link-card {

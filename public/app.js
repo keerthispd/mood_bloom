@@ -125,7 +125,7 @@ const REFLECTION_PROMPTS = [
 let databasePromise = null;
 let cachedSessionKey = null;
 let cachedSessionUserId = null;
-let selectedMood = "calm";
+let selectedMood = null;
 let cachedSessionCryptoKey = null;
 
 function createGuestSession() {
@@ -620,15 +620,6 @@ function renderSessionBar() {
 	container.style.gap = '0.5rem';
 
 	if (session && !isGuestSession(session)) {
-		// If we don't have the in-memory crypto key, show an Unlock button
-		if (!cachedSessionCryptoKey) {
-			const unlockBtn = document.createElement('button');
-			unlockBtn.className = 'button-small button-ghost';
-			unlockBtn.textContent = 'Unlock';
-			unlockBtn.type = 'button';
-			unlockBtn.addEventListener('click', () => showUnlockModal(session.username));
-			container.appendChild(unlockBtn);
-		}
 
 		const signOut = document.createElement('button');
 		signOut.className = 'button-small button-ghost';
@@ -672,7 +663,7 @@ async function decryptVisibleEntries() {
 					try {
 						text = await decryptString(entry.content, key);
 					} catch (e) {
-						text = 'Locked - click Unlock to view';
+						text = 'Locked - sign in again to view';
 					}
 				} else {
 					text = entry.content || '';
@@ -682,7 +673,7 @@ async function decryptVisibleEntries() {
 					try {
 						text = await decryptString(entry.note, key);
 					} catch (e) {
-						text = 'Locked - click Unlock to view';
+						text = 'Locked - sign in again to view';
 					}
 				} else {
 					text = entry.note || '';
@@ -695,107 +686,6 @@ async function decryptVisibleEntries() {
 			// ignore
 		}
 	}
-}
-
-function showUnlockModal(username) {
-	if (document.querySelector('.unlock-modal')) {
-		return;
-	}
-
-	const overlay = document.createElement('div');
-	overlay.className = 'unlock-modal';
-	Object.assign(overlay.style, {
-		position: 'fixed',
-		inset: 0,
-		background: 'rgba(0,0,0,0.35)',
-		display: 'flex',
-		alignItems: 'center',
-		justifyContent: 'center',
-		zIndex: 9999
-	});
-
-	const panel = document.createElement('div');
-	Object.assign(panel.style, {
-		background: '#fff',
-		padding: '18px',
-		borderRadius: '12px',
-		width: '360px',
-		boxShadow: '0 10px 30px rgba(0,0,0,0.15)'
-	});
-
-	const title = document.createElement('h3');
-	title.textContent = 'Unlock private entries';
-	title.style.marginTop = '0';
-
-	const info = document.createElement('p');
-	info.textContent = `Enter password for ${username}`;
-
-	const pwd = document.createElement('input');
-	pwd.type = 'password';
-	pwd.placeholder = 'Password';
-	Object.assign(pwd.style, {
-		width: '100%',
-		padding: '10px',
-		margin: '8px 0',
-		boxSizing: 'border-box'
-	});
-
-	const row = document.createElement('div');
-	Object.assign(row.style, {
-		display: 'flex',
-		gap: '8px',
-		justifyContent: 'flex-end',
-		marginTop: '8px'
-	});
-
-	const cancel = document.createElement('button');
-	cancel.className = 'button-secondary';
-	cancel.textContent = 'Cancel';
-	cancel.addEventListener('click', () => document.body.removeChild(overlay));
-
-	const submit = document.createElement('button');
-	submit.className = 'button';
-	submit.textContent = 'Unlock';
-	submit.addEventListener('click', async () => {
-		const session = getSession();
-		if (!session || !session.username) {
-			return;
-		}
-
-		const password = pwd.value || '';
-		if (!password) {
-			return;
-		}
-
-		const user = await idbGet('users', session.userId);
-		if (!user || user.username !== session.username || !user.passwordSalt || !user.passwordHash) {
-			clearSession();
-			alert('User record is missing verification data.');
-			window.location.href = 'landing.html';
-			return;
-		}
-
-		const ok = await verifyPassword(password, user.passwordSalt, user.passwordHash);
-		if (!ok) {
-			alert('Incorrect password.');
-			return;
-		}
-
-		cachedSessionCryptoKey = await deriveKeyFromPassword(password, user.encryptionSalt || user.username);
-		document.body.removeChild(overlay);
-		renderSessionBar();
-		await decryptVisibleEntries();
-	});
-
-	row.appendChild(cancel);
-	row.appendChild(submit);
-	panel.appendChild(title);
-	panel.appendChild(info);
-	panel.appendChild(pwd);
-	panel.appendChild(row);
-	overlay.appendChild(panel);
-	document.body.appendChild(overlay);
-	pwd.focus();
 }
 
 function showEditModal(entry, kind, onSaved) {
@@ -944,7 +834,7 @@ function renderJournalPageCopy() {
 function renderMessagePageCopy() {
 	setNodeText("[data-heart-guidelines]", HEART_DUMP_GUIDELINES_TEXT);
 	setNodeText("[data-heart-post-notice]", HEART_DUMP_POST_NOTICE_TEXT);
-	setNodeText("[data-heart-empty]", "No anonymous posts yet. Share the first supportive message when you are ready.");
+	setNodeText("[data-heart-empty]", "Shared posts. Be kind, be real, and keep it supportive.");
 }
 
 function renderPageGreeting() {
@@ -1114,52 +1004,69 @@ function initMoodPage() {
 		});
 	});
 
+	function clearMoodSelection() {
+		selectedMood = null;
+		buttons.forEach((btn) => {
+			btn.classList.remove('is-selected');
+			btn.setAttribute('aria-pressed', 'false');
+		});
+	}
+
 	async function loadMoodHistory() {
-		const node = document.querySelector('[data-mood-history]');
-		if (!node) return;
-		const session = getSession();
-		const sessionKey = await getSessionCryptoKey();
-		let items = [];
-		const active = session || ensureGuestSession();
-		items = await idbGetAllByIndex('entries', 'userId', active.userId);
-		items = items.filter((i) => i.kind === 'mood');
-		node.replaceChildren();
-		for (const it of items) {
-			let noteText = it.note || '';
-			if (it.encrypted && sessionKey) {
-				try {
-					noteText = await decryptString(it.note, sessionKey);
-				} catch (e) {
-							noteText = 'Locked — click Unlock to view';
-				}
-			}
-			const el = document.createElement('div');
-			el.className = 'entry-card';
-			el.dataset.entryId = it.entryId || '';
-			const when = new Date(it.createdAt).toLocaleString();
-			el.innerHTML = `<strong>${it.mood} · ${when}</strong><p>${noteText}</p><div class="entry-actions"><button class="button-small edit-entry">Edit</button><button class="button-small button-secondary delete-entry">Delete</button></div>`;
-			node.appendChild(el);
+			const node = document.querySelector('[data-mood-history]');
+	 		if (!node) return;
+	 		const session = getSession();
+	 		const sessionKey = await getSessionCryptoKey();
+	 		let items = [];
+	 		const active = session || ensureGuestSession();
+	 		items = await idbGetAllByIndex('entries', 'userId', active.userId);
+	 		items = items.filter((i) => i.kind === 'mood');
+	 		items.sort((a, b) => b.createdAt.localeCompare(a.createdAt));
+	 		node.replaceChildren();
+	 		for (const it of items) {
+	 			let noteText = it.note || '';
+	 			if (it.encrypted && sessionKey) {
+	 				try {
+	 					noteText = await decryptString(it.note, sessionKey);
+	 				} catch (e) {
+	 					noteText = 'Locked — sign in again to view';
+	 				}
+	 			}
+	 			const el = document.createElement('div');
+	 			el.className = 'entry-card';
+	 			el.dataset.entryId = it.entryId || '';
+	 			const when = new Date(it.createdAt).toLocaleString();
+	 			el.innerHTML = `<strong>${it.mood} · ${when}</strong><p>${noteText}</p><div class="entry-actions"><button class="button-small edit-entry">Edit</button><button class="button-small button-secondary delete-entry">Delete</button></div>`;
+	 			node.appendChild(el);
 
-			const editBtn = el.querySelector('.edit-entry');
-			const delBtn = el.querySelector('.delete-entry');
+	 			const editBtn = el.querySelector('.edit-entry');
+	 			const delBtn = el.querySelector('.delete-entry');
 
-			if (editBtn) {
-				editBtn.addEventListener('click', () => showEditModal(it, 'mood', loadMoodHistory));
-			}
+	 			if (editBtn) {
+	 				editBtn.addEventListener('click', () => showEditModal(it, 'mood', loadMoodHistory));
+	 			}
 
-			if (delBtn) {
-				delBtn.addEventListener('click', async () => {
-					if (!confirm('Delete this mood entry?')) return;
-					await idbDelete('entries', it.entryId);
-					await loadMoodHistory();
-				});
-			}
-		}
+	 			if (delBtn) {
+	 				delBtn.addEventListener('click', async () => {
+	 					if (!confirm('Delete this mood entry?')) return;
+	 					await idbDelete('entries', it.entryId);
+	 					await loadMoodHistory();
+	 				});
+	 			}
+	 		}
 	}
 
 	if (form) {
 		form.addEventListener('submit', async (e) => {
 			e.preventDefault();
+			if (!selectedMood) {
+				if (feedback) {
+					feedback.textContent = 'Please choose a mood before saving your check-in.';
+					feedback.setAttribute('data-state', 'error');
+				}
+				return;
+			}
+
 			const session = getSession() || ensureGuestSession();
 			const entry = {
 				entryId: createId('entry'),
@@ -1180,15 +1087,10 @@ function initMoodPage() {
 			}
 			await putEntry(entry);
 			renderMoodResponse(selectedMood);
-			note.value = '';
+			if (note) note.value = '';
+			clearMoodSelection();
 			await loadMoodHistory();
 		});
-	}
-
-	const initiallySelected = buttons.find((button) => button.dataset.moodOption === selectedMood);
-	if (initiallySelected) {
-		initiallySelected.classList.add('is-selected');
-		initiallySelected.setAttribute('aria-pressed', 'true');
 	}
 
 	loadMoodHistory();
@@ -1218,7 +1120,7 @@ function initJournalPage() {
 				try {
 					contentText = await decryptString(it.content, sessionKey);
 				} catch (e) {
-					contentText = 'Locked — click Unlock to view';
+					contentText = 'Locked — sign in again to view';
 				}
 			}
 			const el = document.createElement('div');
@@ -1289,9 +1191,15 @@ function initMessagePage() {
 	async function loadPosts() {
 		if (!listNode) return;
 		const items = await idbGetAllSorted('publicPosts');
+		items.sort((a, b) => b.createdAt.localeCompare(a.createdAt));
 		listNode.replaceChildren();
 		if (!items.length && emptyNode) {
 			emptyNode.textContent = 'No anonymous posts yet. Share the first supportive message when you are ready.';
+			emptyNode.style.display = '';
+		} else if (items.length && emptyNode) {
+			// Hide the empty-state element when posts exist
+			emptyNode.textContent = '';
+			emptyNode.style.display = 'none';
 		}
 		items.forEach((p) => {
 			const el = document.createElement('div');
